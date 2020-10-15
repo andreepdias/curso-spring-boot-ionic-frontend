@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { API_CONFIG } from '../../config/api.config';
 import { ClienteDTO } from '../../models/clienteDTO';
 import { ClienteService } from '../../services/cliente.service';
 import { StorageService } from '../../services/storage.service';
@@ -26,10 +27,19 @@ export class ProfilePage {
     if(localUser && localUser.email){
       this.clienteService.findByEmail(localUser.email)
         .subscribe(response => {
-          this.cliente = response; 
+          this.cliente = response;
+          this.getImageIfExists();
         },
         error => {});
     }
+  }
+
+  getImageIfExists(){
+    this.clienteService.getImageFromBucket(this.cliente.id)
+      .subscribe(response => {
+        this.cliente.imageUrl = `${API_CONFIG.bucketBaseUrl}/cp${this.cliente.id}.jpg`
+      },
+      error => {});
   }
 
 }

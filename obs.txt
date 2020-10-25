@@ -1,0 +1,5 @@
+After clone from Git, run:
+
+npm install
+ionic cordova platform add browser --save
+ionic cordova platform add android --save
